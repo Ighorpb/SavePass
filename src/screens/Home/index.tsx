@@ -30,15 +30,29 @@ export function Home() {
 
   async function loadData() {
     const dataKey = '@savepass:logins';
-    // Get asyncStorage data, use setSearchListData and setData
+    const response = await AsyncStorage.getItem(dataKey)
+
+    if(response) {
+      const parsedData = JSON.parse(response);
+      setSearchListData(parsedData)
+      setData(parsedData)
+    }
+
   }
 
   function handleFilterLoginData() {
-    // Filter results inside data, save with setSearchListData
+    if (searchText.trim() === '') {
+      setSearchListData(data);
+    } else {
+      const filteredData = data.filter((item) =>
+        item.service_name.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setSearchListData(filteredData);
+    }
   }
 
   function handleChangeInputText(text: string) {
-    // Update searchText value
+    setSearchText(text)
   }
 
   useFocusEffect(useCallback(() => {
@@ -49,8 +63,8 @@ export function Home() {
     <>
       <Header
         user={{
-          name: 'Rocketseat',
-          avatar_url: 'https://i.ibb.co/ZmFHZDM/rocketseat.jpg'
+          name: 'Elisa',
+          avatar_url: 'https://pps.whatsapp.net/v/t61.24694-24/344894467_129549750090818_1772470785663492525_n.jpg?ccb=11-4&oh=01_AdRfhlbwGI3E1h1Yqh6v6fRkwKjor3evS9UDe4MG0jck1g&oe=6479B3D0'
         }}
       />
       <Container>
@@ -76,14 +90,14 @@ export function Home() {
 
         <LoginList
           keyExtractor={(item) => item.id}
-          data={searchListData}
-          renderItem={({ item: loginData }) => {
-            return <LoginDataItem
-              service_name={loginData.service_name}
-              email={loginData.email}
-              password={loginData.password}
+          data={searchListData} 
+          renderItem={({ item }) => (
+            <LoginDataItem
+              service_name={item.service_name}
+              email={item.email}
+              password={item.password}
             />
-          }}
+          )}
         />
       </Container>
     </>

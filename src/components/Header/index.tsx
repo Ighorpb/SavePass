@@ -62,7 +62,7 @@ export function Header({ user }: HeaderProps) {
               </HelloMessage>
 
               <SecondaryMessage>
-                Sinta-se seguro aqui
+                Sinta-se segura aqui
               </SecondaryMessage>
             </TextContainer>
           </AboutUser>
